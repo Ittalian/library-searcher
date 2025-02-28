@@ -52,7 +52,7 @@ class SearchBookViewState extends State<SearchBookView> {
   @override
   Widget build(BuildContext context) {
     return BaseImageContainer(
-      imagePath: 'images/book_search.jpg',
+      imagePath: 'images/search_book.jpg',
       child: Scaffold(
         backgroundColor: Colors.white.withOpacity(0),
         body: Column(
@@ -67,10 +67,10 @@ class SearchBookViewState extends State<SearchBookView> {
               label: '検索',
               onPressed: () async {
                 List<BookDetail> bookDetails = [];
-                // await LoadingDialog.show(context, ('検索中'));
+                await LoadingDialog.show(context, ('検索中'));
                 bookDetails = await BookDetailSearchService(title: title)
                     .getBookDetails();
-                // await LoadingDialog.hide(context);
+                await LoadingDialog.hide(context);
                 if (bookDetails.isEmpty) {
                   throw showErrorMessage('該当する文書がありません');
                 } else {

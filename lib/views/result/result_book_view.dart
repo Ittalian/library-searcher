@@ -16,13 +16,14 @@ class ResultBookView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white.withOpacity(0),
       body: BaseImageContainer(
-        imagePath: 'images/book.jpg',
+        imagePath: 'images/result_book.jpg',
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Padding(padding: EdgeInsets.only(top: 200)),
               for (var bookDetail in bookDetails)
-                ResultBookTile(bookDetail: bookDetail)
+                ResultBookTile(bookDetail: bookDetail),
             ],
           ),
         ),

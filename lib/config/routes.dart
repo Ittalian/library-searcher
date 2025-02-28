@@ -4,7 +4,6 @@ import 'package:library_searcher/views/result/result_view.dart';
 import 'package:library_searcher/views/search/search_book_view.dart';
 
 class Routes {
-  static const String search = 'search';
   static const String searchBook = 'search_book';
   static const String result = 'result';
   static const String resultBook = 'book_result';
