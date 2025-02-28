@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:library_searcher/models/book.dart';
 
 import 'package:http/http.dart' as http;
@@ -37,7 +38,7 @@ class BookSearchService {
   }
 
   String _getUrl() {
-    return 'https://api.calil.jp/check?appkey=b0a3bc7971cca1c0342c3450dabdfa39&isbn=$isbn&systemid=Tokyo_Suginami&format=json';
+    return 'https://api.calil.jp/check?appkey=${dotenv.get('calil_application_key')}&isbn=$isbn&systemid=Tokyo_Suginami&format=json';
   }
 
   String extractJsonFromCallback(String responseBody) {

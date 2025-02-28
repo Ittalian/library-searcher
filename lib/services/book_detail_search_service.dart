@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:library_searcher/models/book_detail.dart';
 
 import 'package:http/http.dart' as http;
@@ -39,6 +40,6 @@ class BookDetailSearchService {
   }
 
   String _getUrl() {
-    return 'https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?applicationId=1088483863844711105&title=$title&sort=sales';
+    return 'https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?applicationId=${dotenv.get('rakuten_application_id')}&title=$title&sort=sales';
   }
 }
