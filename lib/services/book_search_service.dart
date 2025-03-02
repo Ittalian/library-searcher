@@ -1,8 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:library_searcher/models/book.dart';
-
 import 'package:http/http.dart' as http;
+import 'package:library_searcher/models/book.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class BookSearchService {
   final String isbn;
@@ -14,26 +14,35 @@ class BookSearchService {
   Future<List<Book>> getBooks() async {
     final url = _getUrl();
     final target = Uri.parse(url);
-    final response = await http.get(target);
-    if (response.statusCode == 200) {
-      final String jsonString = extractJsonFromCallback(response.body);
-      final Map<String, dynamic> data = json.decode(jsonString);
-      List<Book> books = [];
-      if (data['books'] != null) {
-        final statuses = data['books'][isbn]['Tokyo_Suginami']['libkey'];
-        if (statuses != null) {
-          statuses.forEach(
-            (library, status) {
-              books.add(Book(library: library, status: status));
-            },
-          );
-        } else {
-          return [];
+
+    while (true) {
+      final response = await http.get(target);
+      if (response.statusCode == 200) {
+        final String jsonString = extractJsonFromCallback(response.body);
+        final Map<String, dynamic> data = json.decode(jsonString);
+
+        if (data.containsKey('continue') && data['continue'] == 1) {
+          await Future.delayed(const Duration(seconds: 2));
+          continue;
         }
+
+        List<Book> books = [];
+        if (data['books'] != null) {
+          final statuses = data['books'][isbn]['Tokyo_Suginami']['libkey'];
+          if (statuses != null) {
+            statuses.forEach(
+              (library, status) {
+                books.add(Book(library: library, status: status));
+              },
+            );
+          } else {
+            return [];
+          }
+        }
+        return books;
+      } else {
+        return [];
       }
-      return books;
-    } else {
-      return [];
     }
   }
 
